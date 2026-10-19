@@ -7,7 +7,7 @@ export default async function handler(req,res){
   if(req.method==='POST'){
     const b=req.body||{};
     if(!/^[A-Za-z0-9_.=-]{6,100}$/.test(String(b.ref||'')))return res.status(400).json({error:'Invalid order'});
-    return res.status(200).json({ok:await setStatus(b.ref,b.status)});
+    const r=await setStatus(b.ref,b.status);return res.status(200).json({ok:!!r,doneAt:r?r.doneAt:undefined});
   }
   res.status(405).end();
 }

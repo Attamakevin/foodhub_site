@@ -3,7 +3,7 @@
 Customers pay on Paystack. Only after the server confirms the payment with Paystack does the site show the "Continue to WhatsApp" button.
 
 ## Folder
-- public/index.html : the whole shop (home, menu, Our Story, Reviews, cart, checkout, admin)
+- public/index.html : the whole shop (home, menu, Our Story, Meet the Team, Reviews, cart, checkout, admin)
 - public/logo.png and public/favicon.png : your logo (replace these files to change it)
 - api/pay.js : checks the cart and delivery fee on the server, then starts the Paystack payment
 - api/verify.js : confirms the payment with Paystack and returns the WhatsApp link
@@ -26,11 +26,17 @@ Customers pay on Paystack. Only after the server confirms the payment with Payst
 6. Add your domain in Settings > Domains and follow Vercel's DNS instructions.
 
 ## Menu categories and packs
-Categories: Promotional Offers, Bowls, Main Meals, Proteins, Sides, Pastries, Drinks, Fresh Juices, Ice Creams. Only Main Meals need a pack. The pack names and prices are set in the admin under Settings and Delivery, and the pack price is added to the meal price. Group Packages and Office Meals are sub-headings inside Promotional Offers.
+Categories: Promotional Offers, Bowls, Main Meals, Proteins, Sides, Pastries, Celebration Cakes, Drinks, Fresh Juices, Ice Creams. Only Main Meals need a pack. The pack names and prices are set in the admin under Settings and Delivery, and the pack price is added to the meal price. Group Packages and Office Meals are sub-headings inside Promotional Offers.
 If an older saved menu is found, the site keeps your WhatsApp number, address, hours and delivery settings and starts from the new menu.
 
+## Meet the Team
+Our Story has a second page, Meet the Team (the title can be changed in the admin). Add the MD/CEO, the management team and the wider team under Admin > Team, with a photo, role and short bio. Members can be switched on or off and reordered.
+
+## Orders and CSV export
+Admin > View Orders lists paid orders with the time each order came in (Lagos time) and the time it was marked Done, or Ready for pickup for pickup orders. Filter by date or status, then press Export CSV. The file opens in Excel or Google Sheets and includes both times and the minutes taken.
+
 ## Using the admin
-Open your-site.com/#/admin, log in with ADMIN_PASSWORD, use the tabs to manage Menu and Offers, Reviews (text and screenshots), and Settings and Delivery (details, packs, Our Story text, banners, delivery), then press Save and Publish.
+Open your-site.com/#/admin, log in with ADMIN_PASSWORD, use the tabs to manage Menu and Offers (click Edit on a product to change it, and use its on/off switch to mark it available or sold out, which saves straight away), Reviews (text and screenshots), Team, and Settings and Delivery (details, packs, Our Story text, banners, delivery), then press Save and Publish.
 
 ## Orders
 Every confirmed payment is saved automatically and appears at your-site.com/#/orders (after admin login), where you can mark orders as Done. Paystack also emails you each payment, and Resend can email the full order if you set it up.

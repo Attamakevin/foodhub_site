@@ -54,7 +54,7 @@ footer{background:#0a0a0a;color:#cfcfcf;padding:36px 0 22px;font-size:.92rem;mar
 <div id="app"></div><div id="toast"></div>
 <script>
 var D=null,E=null,KEY=(function(){try{return sessionStorage.getItem('fh_key')||''}catch(e){return ''}})(),cat='All',cart=[];
-var CATS=['Promotional Offers','Bowls','Main Meals','Proteins','Sides','Pastries','Celebration Cakes','Drinks','Fresh Juices','Ice Creams'],MAIN='Main Meals',PROMO='Promotional Offers',at='menu',af='All',sub='All',ed=null,TG=['Leadership','Management Team','The Wider Team'];
+var CATS=['Main Meals','Bowls','Promotional Offers','Proteins','Sides','Pastries','Celebration Cakes','Drinks','Fresh Juices','Ice Creams'],MAIN='Main Meals',PROMO='Promotional Offers',at='menu',af='All',sub='All',ed=null,TG=['Leadership','Management Team','The Wider Team'];
 try{cart=JSON.parse(localStorage.getItem('fh_cart')||'[]')}catch(e){}
 var $=function(s){return document.querySelector(s)};
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}

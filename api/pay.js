@@ -4,13 +4,21 @@ function siteUrl(req){let u=String(process.env.SITE_URL||'').trim();if(u&&!/^htt
 export default async function handler(req,res){
   if(req.method!=='POST')return res.status(405).end();
   const b=req.body||{},m=await getMenu(),bad=e=>res.status(400).json({error:e});
-  let sub=0;const items=[];
+  let sub=0,food=0,needPack=false,packQty=0;const items=[];
   for(const l of Array.isArray(b.cart)?b.cart:[]){
-    const it=m.items.find(i=>i.id===l.id),o=it&&it.opts[+l.o],q=Math.floor(+l.q),packs=m.s.packs||[],need=!!it&&it.cat==='Main Meals'&&packs.length>0,pk=need?packs[+l.pk]:null;
-    if(!it||!it.on||!o||!(q>0&&q<=100))return bad('Some items are no longer available. Please review your order.');
-    if(need&&!pk)return bad('Please choose a pack for each main meal.');
-    const u=o.p+(pk?pk.p:0);sub+=u*q;items.push(`${q} x ${it.name} (${o.l}${pk?' + '+pk.n:''}) - ${naira(u*q)}`);
+    const q=Math.floor(+l.q);
+    if(!(q>0&&q<=100))return bad('Some items are no longer available. Please review your order.');
+    if(l.id==='__p'){
+      const pk=(m.s.packs||[]).find(x=>x.n===l.n);
+      if(!pk)return bad('A pack in your order is no longer available. Please review your order.');
+      packQty+=q;sub+=pk.p*q;items.push(`${q} x ${pk.n} - ${naira(pk.p*q)}`);continue;
+    }
+    const it=m.items.find(i=>i.id===l.id),o=it&&it.opts[+l.o];
+    if(!it||!it.on||!o)return bad('Some items are no longer available. Please review your order.');
+    food++;if(['Main Meals','Proteins','Sides'].includes(it.cat))needPack=true;sub+=o.p*q;items.push(`${q} x ${it.name} (${o.l}) - ${naira(o.p*q)}`);
   }
+  if(!food)return bad('Please add a meal to your order.');
+  if(needPack&&(m.s.packs||[]).length&&!packQty)return bad('Please add at least one pack for your meals.');
   if(!items.length)return bad('Your order is empty.');
   const name=String(b.name||'').trim().slice(0,80),phone=String(b.phone||'').trim().slice(0,30),email=String(b.email||'').trim().slice(0,120);
   if(!name||!phone||!/^\S+@\S+\.\S+$/.test(email))return bad('Please enter your name, phone number and a valid email address.');

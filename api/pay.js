@@ -1,5 +1,5 @@
 import {getMenu} from '../lib/store.js';
-import {feeFor,naira} from '../lib/pricing.js';
+import {feeFor,naira,bestDiscount,discounted} from '../lib/pricing.js';
 function siteUrl(req){let u=String(process.env.SITE_URL||'').trim();if(u&&!/^https?:\/\//i.test(u))u='https://'+u;try{return new URL(u).origin}catch(e){return 'https://'+req.headers.host}}
 export default async function handler(req,res){
   if(req.method!=='POST')return res.status(405).end();
@@ -15,7 +15,7 @@ export default async function handler(req,res){
     }
     const it=m.items.find(i=>i.id===l.id),o=it&&it.opts[+l.o];
     if(!it||!it.on||!o)return bad('Some items are no longer available. Please review your order.');
-    food++;if(['Main Meals','Proteins','Sides'].includes(it.cat))needPack=true;sub+=o.p*q;items.push(`${q} x ${it.name} (${o.l}) - ${naira(o.p*q)}`);
+    food++;if(['Main Meals','Proteins','Sides'].includes(it.cat))needPack=true;const dsc=bestDiscount(m,it),pu=dsc?discounted(o.p,+dsc.pct):o.p;sub+=pu*q;items.push(`${q} x ${it.name} (${o.l}${dsc?', '+dsc.pct+'% off':''}) - ${naira(pu*q)}`);
   }
   if(!food)return bad('Please add a meal to your order.');
   if(needPack&&(m.s.packs||[]).length&&!packQty)return bad('Please add at least one pack for your meals.');
